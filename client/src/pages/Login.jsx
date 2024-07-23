@@ -1,11 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
+import {useState} from 'react';
+import axios from 'axios';
 
-const Login = ({ handleSubmit, setName, setPassword }) => {
+
+
+const Login = () => {
+
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:8001/login', { name, password })
+            .then(result => {
+                console.log(result);
+                navigate('/home');
+            })
+            .catch(err => console.log(err));
+    }
     return (
         <div className="w-full h-screen flex flex-col md:flex-row">
             <div className='relative w-full md:w-1/2 h-1/2 md:h-full flex flex-col bg-sky-500'>
-                <div className='absolute top-[25%] left-[10%] flex flex-col'>
+                <div className='absolute top-[25%] left-[25%] flex flex-col'>
                     <h1 className="text-4xl font-bold my-4">Welcome to reView</h1>
                 </div>
             </div>
