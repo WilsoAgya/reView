@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar.jsx';
 import Modal from '../components/Modal.jsx';
+import { FaStar } from 'react-icons/fa';
+import "./App.css";
 
 let base_url = 'https://api.themoviedb.org/3';
 const API_KEY = import.meta.env.VITE_API_KEY; // Use REACT_APP_ prefix
@@ -11,9 +13,11 @@ export function Results() {
   const [query, setQuery] = useState("");
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(null);
+  const [hover,setHover] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  console.log(API_KEY);
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -65,7 +69,7 @@ export function Results() {
               </button>
             ))}
             <Modal open={open} onClose={() => setOpen(false)}>
-  <div className="flex flex-col lg:flex-row gap-4 p-4 md:w-[50vw] lg:w-[80vw] ">
+  <div className="flex flex-col lg:flex-row gap-4 p-4 sm:w-[50vw] md:w-[50vw] lg:w-[80vw]">
     <div className="w-1/3">
       {selectedMovie && selectedMovie.poster_path ? (
         <img
@@ -85,11 +89,42 @@ export function Results() {
       <p className="text-gray-700 text-md mb-4">
         {selectedMovie ? selectedMovie.overview : 'Movie Description'}
       </p>
-      <textarea className=" border border-gray-800 w-full h-48" placeholder="Enter Text" />
-      <button>Submit</button>
+      <textarea
+        className="border rounded border-gray-800 w-full h-48"
+        placeholder="Enter Text"
+      />
+      <div className="flex justify-between items-center">
+        <div className="flex">
+          {[...Array(5)].map((star, index) => {
+            const currentRating = index + 1;
+            return (
+              <label key={index}>
+                <input
+                  type="radio"
+                  name="rating"
+                  value={currentRating}
+                  onClick={() => setRating(currentRating)}
+                  className="hidden"
+                />
+                <FaStar
+                  className="star"
+                  color={currentRating <= (hover || rating) ? '#ffc107' : '#e4e5e9'}
+                  size={30}
+                  onMouseEnter={() => setHover(currentRating)}
+                  onMouseLeave={() => setHover(null)}
+                />
+              </label>
+            );
+          })}
+        </div>
+        <button className="bg-indigo-500 px-4 py-2 text-white rounded-lg self-end mt-4">
+          Submit
+        </button>
+      </div>
     </div>
   </div>
 </Modal>
+
 
           </div>
         </ul>
