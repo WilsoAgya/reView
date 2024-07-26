@@ -1,7 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const UserModel = require('./models/NewUser.js')
+const {UserModel, MovieModel} = require('./models/NewUser.js')
+
 
 const app = express()
 app.use(express.json())
@@ -15,6 +16,12 @@ app.post('/signup', (req, res) => {
     UserModel.create(req.body)
     .then(users => res.json(users))
     .catch(err => res.json(err))
+})
+
+app.post('/home',(req,res)=>{
+    MovieModel.create(req.body)
+    .then(movies => res.json(movies))
+    .catch(err=>res.json(err))
 })
 
 app.post("/login", (req, res) =>{
