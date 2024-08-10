@@ -15,11 +15,17 @@ const Login = () => {
         e.preventDefault();
         axios.post('http://localhost:8001/login', { name, password })
             .then(result => {
+                if (result.data.success) {
+                    // Extract user ID from the response
+                    const userId = result.data.user._id;
+                    console.log('Logged in successfully. User ID:', userId);
+                }
                 console.log(result);
                 navigate('/home');
             })
             .catch(err => console.log(err));
     }
+    
     return (
         <div className="w-full h-screen flex flex-col md:flex-row">
             <div className='relative w-full md:w-1/2 h-1/2 md:h-full flex flex-col bg-sky-500'>

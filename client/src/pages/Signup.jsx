@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid'; // import uuid
 
 function Signup() {
+    //const [id, setId] = useState(uuidv4()); // generate random ID
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        //localStorage.setItem('userId', id); // Store UUID in localStorage
         axios.post('http://localhost:8001/signup', { name, password })
             .then(result => {
                 console.log(result);
@@ -16,6 +19,8 @@ function Signup() {
             })
             .catch(err => console.log(err));
     }
+
+  
 
     return (
         <div className="w-full h-screen flex flex-col md:flex-row">

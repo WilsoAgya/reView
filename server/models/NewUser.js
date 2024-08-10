@@ -1,31 +1,24 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { MovieSchema } = require('./Movie');
 
-// Define the User schema
+
+
 const UserSchema = new mongoose.Schema({
+    
     name: String,
     password: String,
-    movies: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Movie'
-    }]
+    reviews:[
+        MovieSchema
+    ]
+    
+   
 });
 
-// Define the Movie schema
-const MovieSchema = new mongoose.Schema({
-    name: String,
-    img_path: String,
-    rating: Number,  // Changed from 'int' to 'Number'
-    overview: String,
-    review: String,
-});
-
-// Create the User and Movie models
+// Create the User model
 const UserModel = mongoose.model('User', UserSchema);
-const MovieModel = mongoose.model('Movie', MovieSchema);
 
-// Export the models
+
 module.exports = {
-    UserModel,
-    MovieModel
+    UserModel
+   
 };
