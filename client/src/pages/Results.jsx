@@ -14,18 +14,22 @@ const API_KEY = import.meta.env.VITE_API_KEY; // Use REACT_APP_ prefix
 export function Results() {
   const navigate = useNavigate();
   const [results, setResults] = useState([]);
+  const userId = localStorage.getItem('userId');
   const [query, setQuery] = useState("");
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState({
+    id:"",
     name: "",
     overview: "",
     img_path: "",
     review: "",
     rating: null
   });
+  
+  
 
   
 
@@ -37,24 +41,25 @@ export function Results() {
   function handleSubmit(e) {
     e.preventDefault();
     const movieToSubmit = {
-      name: selectedMovie.title,
-      overview: selectedMovie.overview,
-      img_path: selectedMovie.poster_path,
-      review: selectedMovie.review,
-      rating: rating
+      movieReviews: {
+        name: selectedMovie.title,
+        img_path: selectedMovie.poster_path,
+        rating: rating,
+        overview: selectedMovie.overview,
+        review: selectedMovie.review
+      }
     };
+    console.log(movieToSubmit);
   
-    axios.post('http://localhost:8001/home', movieToSubmit)
+    axios.post(`http://localhost:8001/home/${userId}`, movieToSubmit)
       .then(movie => {
-        console.log(movie.data);
         navigate('/home');
       })
       .catch(error => {
         console.error('Error posting data:', error);
       });
   
-    console.log('Review submitted:', selectedMovie.review);
-    console.log('Rating submitted:', rating);
+    
   }
   
 
